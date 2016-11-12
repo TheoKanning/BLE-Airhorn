@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">Base</string>
-    <string name="action_settings">Settings</string>
+    <string name="app_name">Bluetooth Air Horn</string>
+    <string name="welcome_title">You\'re all set!</string>
 </resources>
