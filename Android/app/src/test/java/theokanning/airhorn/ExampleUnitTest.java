@@ -1,4 +1,4 @@
-package theo.base;
+package theo.airhorn;
 
 import org.junit.Test;
 

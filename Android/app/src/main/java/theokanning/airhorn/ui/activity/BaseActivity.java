@@ -1,4 +1,4 @@
-package theo.base.ui.activity;
+package theokanning.airhorn.ui.activity;
 
 
 import android.content.Intent;
@@ -7,8 +7,9 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
-import theo.base.R;
-import theo.base.ui.fragment.BaseFragment;
+import theo.airhorn.R;
+import theokanning.airhorn.ui.fragment.BaseFragment;
+
 
 public class BaseActivity extends AppCompatActivity {
 
@@ -25,21 +26,19 @@ public class BaseActivity extends AppCompatActivity {
         // fragment.  If there is, then potentially replace the current fragment with the new one.
         // However, if the user tries to navigate to the exact same fragment, that will look silly,
         // so only do so if the new fragment has a different canonical name than the current one.
-        if (fragment != null) {
-            if (getCurrentFragment() == null) {
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .add(R.id.fragment_container, fragment)
-                        .commit();
-            } else if (!getCurrentFragmentName().equals(fragment.getClass().getCanonicalName())) {
-                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.fragment_container, fragment);
-                ft.addToBackStack(fragment.getClass().getSimpleName());
-                if (animate) {
-                    ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                }
-                ft.commit();
+        if (getCurrentFragment() == null) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.fragment_container, fragment)
+                    .commit();
+        } else if (!getCurrentFragmentName().equals(fragment.getClass().getCanonicalName())) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.fragment_container, fragment);
+            ft.addToBackStack(fragment.getClass().getSimpleName());
+            if (animate) {
+                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
             }
+            ft.commit();
         }
 
         getSupportActionBar().setTitle(fragment.getTitleResourceId());

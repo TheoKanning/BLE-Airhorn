@@ -1,8 +1,8 @@
-package theo.base.ui.fragment;
+package theokanning.airhorn.ui.fragment;
 
 import android.support.v4.app.Fragment;
 
-import theo.base.ui.activity.BaseActivity;
+import theokanning.airhorn.ui.activity.BaseActivity;
 
 
 public abstract class BaseFragment extends Fragment implements FragmentInterface {

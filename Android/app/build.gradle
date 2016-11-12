@@ -6,8 +6,8 @@ android {
     buildToolsVersion "25.0.0"
 
     defaultConfig {
-        applicationId "theokanning.airhorn"
-        minSdkVersion 16
+        applicationId "com.theokanning.airhorn"
+        minSdkVersion 21
         targetSdkVersion 25
         versionCode 1
         versionName "0.1"
@@ -35,7 +35,7 @@ dependencies {
 
     compile "com.android.support:appcompat-v7:$supportVersion"
     compile "com.android.support:design:$supportVersion"
-    compile 'com.google.code.gson:gson:2.3.1'
+    compile 'com.google.code.gson:gson:2.4'
     compile "com.google.dagger:dagger:$daggerVersion"
 
     compile "com.jakewharton:butterknife:$butterknifeVersion"

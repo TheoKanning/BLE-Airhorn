@@ -1,4 +1,4 @@
-package theo.base.ui.fragment;
+package theokanning.airhorn.ui.fragment;
 
 public interface FragmentInterface {
 

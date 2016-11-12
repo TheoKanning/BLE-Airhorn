@@ -1,11 +1,11 @@
-package theo.base.ui.activity;
+package theokanning.airhorn.ui.activity;
 
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import theo.base.R;
+import theo.airhorn.R;
 
 public class MainActivity extends BaseActivity {
 
