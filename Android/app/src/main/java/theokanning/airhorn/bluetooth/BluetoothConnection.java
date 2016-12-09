@@ -70,9 +70,9 @@ public class BluetoothConnection {
                 Log.i(TAG, "Service discovered, UUID = " + service.getUuid());
             }
 
-            ledService = gatt.getService(UUIDs.LED_SERVICE_UUID);
+            ledService = gatt.getService(UUIDs.AIRHORN_SERVICE_UUID);
             if(ledService != null){
-                ledCharacteristic = ledService.getCharacteristic(UUIDs.LED_CHARACTERISTIC_UUID);
+                ledCharacteristic = ledService.getCharacteristic(UUIDs.VOLUME_CHARACTERISTIC_UUID);
                 ledDescriptor = ledCharacteristic.getDescriptors().get(0);
                 gatt.readCharacteristic(ledCharacteristic);
                 Log.d(TAG, "Characteristic discovered");

@@ -69,7 +69,7 @@ public class BluetoothScanner {
     private List<ScanFilter> getScanFilter(){
         List<ScanFilter> filters = new ArrayList<>();
         ScanFilter.Builder builder = new ScanFilter.Builder();
-        //builder.setServiceUuid(new ParcelUuid(UUIDs.LED_SERVICE_UUID));
+        //builder.setServiceUuid(new ParcelUuid(UUIDs.AIRHORN_SERVICE_UUID));
         ScanFilter ledFilter = builder.build();
 
         filters.add(ledFilter);
