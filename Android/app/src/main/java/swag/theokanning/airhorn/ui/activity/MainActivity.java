@@ -31,33 +31,48 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
     @Override
     protected void onStart() {
         super.onStart();
-        askForPermissions();
+        checkPermissions();
         // todo move this into boot receiver?
         startService(new Intent(getApplicationContext(), BluetoothConnectionService.class));
     }
 
-    // todo break this up
     @AfterPermissionGranted(BLUETOOTH_AND_COARSE_LOCATION_REQUEST)
-    private void askForPermissions() {
+    private void checkPermissions() {
         String[] perms = {Manifest.permission.BLUETOOTH_ADMIN, Manifest.permission.ACCESS_COARSE_LOCATION};
         if (EasyPermissions.hasPermissions(this, perms)) {
             // Already have permission, do the thing
             showWelcomeFragment();
         } else if (EasyPermissions.somePermissionPermanentlyDenied(this, Arrays.asList(perms))) {
-            // Already denied permission, show rationale
-            new AppSettingsDialog.Builder(this, getString(R.string.bluetooth_and_location_permission_rationale))
-                    .setTitle(getString(R.string.bluetooth_and_location_permission_title))
-                    .setPositiveButton(getString(R.string.permissions_go_to_settings))
-                    .setNegativeButton(getString(R.string.permissions_cancel), null /* click listener */)
-                    .setRequestCode(SETTINGS_REQUEST)
-                    .build()
-                    .show();
+            showPermissionRationale();
         } else {
-            // Do not have permissions, request them now
-            String rationale = getString(R.string.bluetooth_and_location_permission_rationale);
-            EasyPermissions.requestPermissions(this, rationale,
-                    BLUETOOTH_AND_COARSE_LOCATION_REQUEST, perms);
+            requestPermissions(perms);
         }
+    }
+
+    /**
+     * Shows a dialog explaining why the permissions are needed
+     * todo replace this with a non-modal message
+     */
+    private void showPermissionRationale() {
+        // Already denied permission, show rationale
+        new AppSettingsDialog.Builder(this, getString(R.string.bluetooth_and_location_permission_rationale))
+                .setTitle(getString(R.string.bluetooth_and_location_permission_title))
+                .setPositiveButton(getString(R.string.permissions_go_to_settings))
+                .setNegativeButton(getString(R.string.permissions_cancel), null /* click listener */)
+                .setRequestCode(SETTINGS_REQUEST)
+                .build()
+                .show();
+    }
+
+    /**
+     * Sends a request for the provided list of permissions
+     * @param perms strings array containing permissions ids
+     */
+    private void requestPermissions(String[] perms) {
+        // Do not have permissions, request them now
+        String rationale = getString(R.string.bluetooth_and_location_permission_rationale);
+        EasyPermissions.requestPermissions(this, rationale,
+                BLUETOOTH_AND_COARSE_LOCATION_REQUEST, perms);
     }
 
     @Override
@@ -83,14 +98,6 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
     @Override
     public void onPermissionsDenied(int requestCode, List<String> perms) {
         Timber.d("Permissions denied: " + perms.toString());
-//        if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
-//            new AppSettingsDialog.Builder(this, getString(R.string.bluetooth_and_location_permission_rationale))
-//                    .setTitle(getString(R.string.bluetooth_and_location_permission_title))
-//                    .setPositiveButton(getString(R.string.permissions_go_to_settings))
-//                    .setNegativeButton(getString(R.string.permissions_cancel), null /* click listener */)
-//                    .setRequestCode(SETTINGS_REQUEST)
-//                    .build()
-//                    .show();
-//        }
+        // todo show message and give link to settings
     }
 }
