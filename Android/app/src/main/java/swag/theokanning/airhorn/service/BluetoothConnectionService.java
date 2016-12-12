@@ -1,4 +1,4 @@
-package theokanning.airhorn.service;
+package swag.theokanning.airhorn.service;
 
 import android.app.Service;
 import android.bluetooth.BluetoothDevice;
@@ -8,7 +8,7 @@ import android.content.ServiceConnection;
 import android.os.Binder;
 import android.os.IBinder;
 
-import theokanning.airhorn.bluetooth.BluetoothConnection;
+import swag.theokanning.airhorn.bluetooth.BluetoothConnection;
 
 
 public class BluetoothConnectionService extends Service {

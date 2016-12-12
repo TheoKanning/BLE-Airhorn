@@ -1,4 +1,4 @@
-package theokanning.airhorn.bluetooth;
+package swag.theokanning.airhorn.bluetooth;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -24,7 +24,7 @@ public class BluetoothScanner {
 
     private Context context;
 
-    private BluetoothAdapter btAdapter;
+    private BluetoothAdapter bluetoothAdapter;
     private BluetoothLeScanner bleScanner;
     private ScanCallback scanCallback;
 
@@ -36,9 +36,13 @@ public class BluetoothScanner {
 
     public BluetoothScanner(Context context) {
         this.context = context;
-        btAdapter = BluetoothAdapter.getDefaultAdapter();
-        bleScanner = btAdapter.getBluetoothLeScanner();
+        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        bleScanner = bluetoothAdapter.getBluetoothLeScanner();
         handler = new Handler();
+    }
+
+    public boolean isEnabled(){
+        return bluetoothAdapter.isEnabled();
     }
 
     public void startScan(final ScanCallback scanCallback) {
@@ -63,7 +67,7 @@ public class BluetoothScanner {
     }
 
     public BluetoothDevice getDevice(String address){
-        return btAdapter.getRemoteDevice(address);
+        return bluetoothAdapter.getRemoteDevice(address);
     }
 
     private List<ScanFilter> getScanFilter(){

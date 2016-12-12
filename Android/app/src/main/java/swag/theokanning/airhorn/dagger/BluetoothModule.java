@@ -1,4 +1,4 @@
-package theo.base;
+package swag.theokanning.airhorn.dagger;
 
 import android.content.Context;
 
@@ -6,14 +6,15 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import swag.theokanning.airhorn.bluetooth.BluetoothScanner;
 
 @Module
-public class DexterModule {
+public class BluetoothModule {
 
-    Context context;
+    private Context context;
 
-    public DexterModule(Context context) {
-        this.context = context;
+    public BluetoothModule(Context context) {
+        this.context = context.getApplicationContext();
     }
 
     @Provides

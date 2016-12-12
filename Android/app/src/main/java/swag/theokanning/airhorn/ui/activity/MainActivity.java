@@ -1,4 +1,4 @@
-package theokanning.airhorn.ui.activity;
+package swag.theokanning.airhorn.ui.activity;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -7,8 +7,8 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 
-import theo.airhorn.R;
-import theokanning.airhorn.ui.fragment.WelcomeFragment;
+import swag.theokanning.airhorn.R;
+import swag.theokanning.airhorn.ui.fragment.WelcomeFragment;
 
 public class MainActivity extends BaseActivity {
 

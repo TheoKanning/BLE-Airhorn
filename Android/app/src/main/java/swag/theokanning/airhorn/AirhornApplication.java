@@ -1,11 +1,11 @@
-package theokanning.airhorn;
+package swag.theokanning.airhorn;
 
 
 import android.app.Application;
 
-import theokanning.airhorn.dagger.AirhornComponent;
-import theokanning.airhorn.dagger.BluetoothModule;
-import theokanning.airhorn.dagger.DaggerAirhornComponent;
+import swag.theokanning.airhorn.dagger.AirhornComponent;
+import swag.theokanning.airhorn.dagger.BluetoothModule;
+import swag.theokanning.airhorn.dagger.DaggerAirhornComponent;
 import timber.log.Timber;
 
 public class AirhornApplication extends Application {
