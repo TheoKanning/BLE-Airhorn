@@ -1,6 +1,7 @@
 package swag.theokanning.airhorn.ui.activity;
 
 import android.Manifest;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
@@ -11,6 +12,7 @@ import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
 import swag.theokanning.airhorn.R;
+import swag.theokanning.airhorn.service.BluetoothConnectionService;
 import swag.theokanning.airhorn.ui.fragment.WelcomeFragment;
 import timber.log.Timber;
 
@@ -30,8 +32,11 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
     protected void onStart() {
         super.onStart();
         askForPermissions();
+        // todo move this into boot receiver?
+        startService(new Intent(getApplicationContext(), BluetoothConnectionService.class));
     }
 
+    // todo break this up
     @AfterPermissionGranted(BLUETOOTH_AND_COARSE_LOCATION_REQUEST)
     private void askForPermissions() {
         String[] perms = {Manifest.permission.BLUETOOTH_ADMIN, Manifest.permission.ACCESS_COARSE_LOCATION};
