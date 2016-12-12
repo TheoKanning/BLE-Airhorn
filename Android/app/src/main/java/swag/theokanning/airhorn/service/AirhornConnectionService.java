@@ -15,26 +15,26 @@ import java.util.List;
 import javax.inject.Inject;
 
 import swag.theokanning.airhorn.AirhornApplication;
-import swag.theokanning.airhorn.bluetooth.BluetoothScanner;
+import swag.theokanning.airhorn.bluetooth.AirhornScanner;
 import timber.log.Timber;
 
 
-public class BluetoothConnectionService extends Service {
+public class AirhornConnectionService extends Service {
 
-    @Inject BluetoothScanner airhornScanner;
+    @Inject AirhornScanner airhornScanner;
 
-    private BluetoothServiceBinder binder = new BluetoothServiceBinder();
+    private AirhornServiceBinder binder = new AirhornServiceBinder();
 
-    public BluetoothConnectionService() {}
+    public AirhornConnectionService() {}
 
     public static void bindToService(Context context, ServiceConnection connection) {
-        Intent intent = new Intent(context, BluetoothConnectionService.class);
+        Intent intent = new Intent(context, AirhornConnectionService.class);
         context.bindService(intent, connection, Context.BIND_AUTO_CREATE);
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Timber.d("Starting BluetoothConnectionService");
+        Timber.d("Starting AirhornConnectionService");
         ((AirhornApplication) getApplicationContext()).getComponent().inject(this);
         if (airhornScanner.isEnabled()) {
             startAirhornScan();
@@ -79,9 +79,9 @@ public class BluetoothConnectionService extends Service {
         });
     }
 
-    public class BluetoothServiceBinder extends Binder {
-        public BluetoothConnectionService getService() {
-            return BluetoothConnectionService.this;
+    public class AirhornServiceBinder extends Binder {
+        public AirhornConnectionService getService() {
+            return AirhornConnectionService.this;
         }
     }
 }

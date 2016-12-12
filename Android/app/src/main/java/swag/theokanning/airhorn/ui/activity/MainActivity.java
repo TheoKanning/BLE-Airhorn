@@ -12,7 +12,7 @@ import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
 import swag.theokanning.airhorn.R;
-import swag.theokanning.airhorn.service.BluetoothConnectionService;
+import swag.theokanning.airhorn.service.AirhornConnectionService;
 import swag.theokanning.airhorn.ui.fragment.WelcomeFragment;
 import timber.log.Timber;
 
@@ -33,7 +33,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
         super.onStart();
         checkPermissions();
         // todo move this into boot receiver?
-        startService(new Intent(getApplicationContext(), BluetoothConnectionService.class));
+        startService(new Intent(getApplicationContext(), AirhornConnectionService.class));
     }
 
     @AfterPermissionGranted(BLUETOOTH_AND_COARSE_LOCATION_REQUEST)

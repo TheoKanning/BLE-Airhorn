@@ -6,7 +6,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import swag.theokanning.airhorn.bluetooth.BluetoothScanner;
+import swag.theokanning.airhorn.bluetooth.AirhornScanner;
 
 @Module
 public class BluetoothModule {
@@ -19,8 +19,8 @@ public class BluetoothModule {
 
     @Provides
     @Singleton
-    BluetoothScanner provideBluetoothScanner() {
-        return new BluetoothScanner(context);
+    AirhornScanner provideBluetoothScanner() {
+        return new AirhornScanner(context);
     }
 
 }

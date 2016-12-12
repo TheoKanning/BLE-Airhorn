@@ -16,8 +16,8 @@ import javax.inject.Inject;
 
 import swag.theokanning.airhorn.AirhornApplication;
 import swag.theokanning.airhorn.R;
-import swag.theokanning.airhorn.bluetooth.BluetoothScanner;
-import swag.theokanning.airhorn.service.BluetoothConnectionService;
+import swag.theokanning.airhorn.bluetooth.AirhornScanner;
+import swag.theokanning.airhorn.service.AirhornConnectionService;
 import timber.log.Timber;
 
 /**
@@ -27,16 +27,16 @@ public class WelcomeFragment extends BaseFragment {
 
     private static final int ENABLE_BLUETOOTH_REQUEST_CODE = 1;
 
-    @Inject BluetoothScanner bluetoothScanner;
+    @Inject AirhornScanner airhornScanner;
 
     boolean bluetoothServiceBound = false;
-    private BluetoothConnectionService bluetoothService;
+    private AirhornConnectionService bluetoothService;
     private ServiceConnection btServiceConnection = new ServiceConnection() {
 
         @Override
         public void onServiceConnected(ComponentName className, IBinder service) {
-            Timber.d("Bound to BluetoothConnectionService");
-            BluetoothConnectionService.BluetoothServiceBinder binder = (BluetoothConnectionService.BluetoothServiceBinder) service;
+            Timber.d("Bound to AirhornConnectionService");
+            AirhornConnectionService.AirhornServiceBinder binder = (AirhornConnectionService.AirhornServiceBinder) service;
             bluetoothService = binder.getService();
             bluetoothServiceBound = true;
         }
@@ -63,7 +63,7 @@ public class WelcomeFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (bluetoothScanner.isEnabled()) {
+        if (airhornScanner.isEnabled()) {
             startBleService();
         } else {
             enableBluetooth();
@@ -81,7 +81,7 @@ public class WelcomeFragment extends BaseFragment {
     }
 
     private void startBleService() {
-        BluetoothConnectionService.bindToService(getContext(), btServiceConnection);
+        AirhornConnectionService.bindToService(getContext(), btServiceConnection);
     }
 
     @Override

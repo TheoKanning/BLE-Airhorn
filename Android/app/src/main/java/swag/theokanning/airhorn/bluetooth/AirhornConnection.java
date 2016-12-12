@@ -19,7 +19,7 @@ import java.util.List;
  *
  * @author Theo Kanning
  */
-public class BluetoothConnection {
+public class AirhornConnection {
 
     public interface BluetoothConnectionListener {
         void onMessageReceived(String message);
@@ -29,7 +29,7 @@ public class BluetoothConnection {
         void onDisconnect();
     }
 
-    private static final String TAG = BluetoothConnection.class.getSimpleName();
+    private static final String TAG = AirhornConnection.class.getSimpleName();
 
     private BluetoothConnectionListener bluetoothConnectionListener;
 
@@ -103,7 +103,7 @@ public class BluetoothConnection {
         }
     };
 
-    public BluetoothConnection(BluetoothDevice device, Context context, BluetoothConnectionListener listener) {
+    public AirhornConnection(BluetoothDevice device, Context context, BluetoothConnectionListener listener) {
         this.bluetoothDevice = device;
         this.bluetoothConnectionListener = listener;
         this.bluetoothGatt = bluetoothDevice.connectGatt(context, true, gattCallback);

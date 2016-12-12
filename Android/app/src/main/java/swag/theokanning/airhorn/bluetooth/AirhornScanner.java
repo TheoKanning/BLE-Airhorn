@@ -1,13 +1,13 @@
 package swag.theokanning.airhorn.bluetooth;
 
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
 import android.bluetooth.le.BluetoothLeScanner;
 import android.bluetooth.le.ScanCallback;
 import android.bluetooth.le.ScanFilter;
 import android.bluetooth.le.ScanSettings;
 import android.content.Context;
 import android.os.Handler;
+import android.os.ParcelUuid;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -18,9 +18,9 @@ import java.util.List;
  *
  * @author Theo Kanning
  */
-public class BluetoothScanner {
+public class AirhornScanner {
 
-    private static final String TAG = BluetoothScanner.class.getSimpleName();
+    private static final String TAG = AirhornScanner.class.getSimpleName();
 
     private Context context;
 
@@ -34,7 +34,7 @@ public class BluetoothScanner {
     // Stops scanning after 10 seconds.
     private static final long SCAN_PERIOD = 10000;
 
-    public BluetoothScanner(Context context) {
+    public AirhornScanner(Context context) {
         this.context = context;
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         bleScanner = bluetoothAdapter.getBluetoothLeScanner();
@@ -61,28 +61,17 @@ public class BluetoothScanner {
         bleScanner.startScan(getScanFilter(), getScanSettings(), scanCallback);
     }
 
-    public void stopScan() {
-        mScanning = false;
-        bleScanner.stopScan(scanCallback);
-    }
-
-    public BluetoothDevice getDevice(String address){
-        return bluetoothAdapter.getRemoteDevice(address);
-    }
-
     private List<ScanFilter> getScanFilter(){
         List<ScanFilter> filters = new ArrayList<>();
         ScanFilter.Builder builder = new ScanFilter.Builder();
-        //builder.setServiceUuid(new ParcelUuid(UUIDs.AIRHORN_SERVICE_UUID));
-        ScanFilter ledFilter = builder.build();
-
-        filters.add(ledFilter);
+        builder.setServiceUuid(new ParcelUuid(UUIDs.AIRHORN_SERVICE_UUID));
+        filters.add(builder.build());
         return filters;
     }
 
     private ScanSettings getScanSettings(){
         ScanSettings.Builder builder = new ScanSettings.Builder();
-        //builder.setMatchMode(ScanSettings.CALLBACK_TYPE_ALL_MATCHES);
+        builder.setScanMode(ScanSettings.SCAN_MODE_LOW_POWER);
         return builder.build();
     }
 }

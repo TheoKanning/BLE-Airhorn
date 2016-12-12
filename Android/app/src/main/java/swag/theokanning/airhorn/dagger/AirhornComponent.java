@@ -5,7 +5,7 @@ import android.app.Application;
 import javax.inject.Singleton;
 
 import dagger.Component;
-import swag.theokanning.airhorn.service.BluetoothConnectionService;
+import swag.theokanning.airhorn.service.AirhornConnectionService;
 import swag.theokanning.airhorn.ui.fragment.WelcomeFragment;
 
 @Singleton
@@ -20,5 +20,5 @@ public interface AirhornComponent {
     void inject(WelcomeFragment fragment);
 
     // service
-    void inject(BluetoothConnectionService service);
+    void inject(AirhornConnectionService service);
 }
