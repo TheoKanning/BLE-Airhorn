@@ -1,6 +1,7 @@
 package swag.theokanning.airhorn.service;
 
 import android.app.Service;
+import android.bluetooth.BluetoothDevice;
 import android.bluetooth.le.ScanCallback;
 import android.bluetooth.le.ScanResult;
 import android.content.Context;
@@ -10,11 +11,14 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import swag.theokanning.airhorn.AirhornApplication;
+import swag.theokanning.airhorn.bluetooth.AirhornConnection;
+import swag.theokanning.airhorn.bluetooth.AirhornConnectionListener;
 import swag.theokanning.airhorn.bluetooth.AirhornScanner;
 import timber.log.Timber;
 
@@ -24,6 +28,23 @@ public class AirhornConnectionService extends Service {
     @Inject AirhornScanner airhornScanner;
 
     private AirhornServiceBinder binder = new AirhornServiceBinder();
+    private List<AirhornConnection> airhornConnections = new ArrayList<>();
+    private AirhornConnectionListener listener = new AirhornConnectionListener() {
+        @Override
+        public void onVolumeChanged(byte volume) {
+            Timber.d("Volume changed: " + volume);
+        }
+
+        @Override
+        public void onConnect() {
+
+        }
+
+        @Override
+        public void onDisconnect() {
+
+        }
+    };
 
     public AirhornConnectionService() {}
 
@@ -61,9 +82,10 @@ public class AirhornConnectionService extends Service {
             @Override
             public void onScanResult(int callbackType, ScanResult result) {
                 super.onScanResult(callbackType, result);
-                Timber.d("Found device: " + result.getDevice().getName());
-                Toast.makeText(getApplicationContext(), "Scan result: " + result.getDevice().getName(), Toast.LENGTH_SHORT).show();
-                // todo connect to device
+                BluetoothDevice airhorn = result.getDevice();
+                Timber.d("Found device: " + airhorn.getName());
+                Toast.makeText(getApplicationContext(), "Scan result: " + airhorn.getName(), Toast.LENGTH_SHORT).show();
+                connectToAirhorn(airhorn);
             }
 
             @Override
@@ -77,6 +99,12 @@ public class AirhornConnectionService extends Service {
                 Toast.makeText(getApplicationContext(), "Scan failed", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void connectToAirhorn(BluetoothDevice airhorn){
+        AirhornConnection connection = new AirhornConnection(airhorn, getApplicationContext(), listener);
+        // todo check if this is the proper way to maintain multiple connections (it's probably not)
+        airhornConnections.add(connection);
     }
 
     public class AirhornServiceBinder extends Binder {

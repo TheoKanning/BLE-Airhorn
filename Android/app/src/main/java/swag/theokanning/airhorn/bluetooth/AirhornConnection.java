@@ -12,6 +12,8 @@ import android.util.Log;
 
 import java.util.List;
 
+import timber.log.Timber;
+
 /**
  * Class for handling connection to a single device
  * Largely taken from google documentation
@@ -21,27 +23,15 @@ import java.util.List;
  */
 public class AirhornConnection {
 
-    public interface BluetoothConnectionListener {
-        void onMessageReceived(String message);
-
-        void onConnect();
-
-        void onDisconnect();
-    }
-
-    private static final String TAG = AirhornConnection.class.getSimpleName();
-
-    private BluetoothConnectionListener bluetoothConnectionListener;
+    private AirhornConnectionListener airhornConnectionListener;
 
     private BluetoothDevice bluetoothDevice;
 
     private BluetoothGatt bluetoothGatt;
 
-    private BluetoothGattService ledService;
+    private BluetoothGattService volumeService;
 
-    private BluetoothGattCharacteristic ledCharacteristic;
-
-    private BluetoothGattDescriptor ledDescriptor;
+    private BluetoothGattCharacteristic volumeCharacteristic;
 
     private BluetoothGattCallback gattCallback = new BluetoothGattCallback() {
         @Override
@@ -49,91 +39,59 @@ public class AirhornConnection {
             Log.d("onConnectionStateChange", "Status: " + status);
             switch (newState) {
                 case BluetoothProfile.STATE_CONNECTED:
-                    Log.i("gattCallback", "STATE_CONNECTED");
-                    bluetoothConnectionListener.onConnect();
+                    Timber.d("STATE_CONNECTED");
+                    airhornConnectionListener.onConnect();
                     gatt.discoverServices();
                     break;
                 case BluetoothProfile.STATE_DISCONNECTED:
-                    Log.e("gattCallback", "STATE_DISCONNECTED");
-                    bluetoothConnectionListener.onDisconnect();
+                    Timber.d("STATE_DISCONNECTED");
+                    airhornConnectionListener.onDisconnect();
                     break;
                 default:
-                    Log.e("gattCallback", "STATE_OTHER");
+                    Timber.d("STATE_OTHER");
             }
         }
 
         @Override
         public void onServicesDiscovered(BluetoothGatt gatt, int status) {
             List<BluetoothGattService> services = gatt.getServices();
-            Log.i("onServicesDiscovered", services.toString());
-            for (BluetoothGattService service: services){
-                Log.i(TAG, "Service discovered, UUID = " + service.getUuid());
-            }
+            Timber.d("onServicesDiscovered" + services.toString());
 
-            ledService = gatt.getService(UUIDs.AIRHORN_SERVICE_UUID);
-            if(ledService != null){
-                ledCharacteristic = ledService.getCharacteristic(UUIDs.VOLUME_CHARACTERISTIC_UUID);
-                ledDescriptor = ledCharacteristic.getDescriptors().get(0);
-                gatt.readCharacteristic(ledCharacteristic);
-                Log.d(TAG, "Characteristic discovered");
+            volumeService = gatt.getService(UUIDs.AIRHORN_SERVICE_UUID);
+            if(volumeService != null){
+                volumeCharacteristic = volumeService.getCharacteristic(UUIDs.VOLUME_CHARACTERISTIC_UUID);
+                gatt.setCharacteristicNotification(volumeCharacteristic, true);
             }
         }
 
         @Override
         public void onCharacteristicRead(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
             super.onCharacteristicRead(gatt, characteristic, status);
-            Log.d(TAG, "Led characteristic value: " + characteristic.getStringValue(0));
         }
 
         @Override
         public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
             super.onCharacteristicWrite(gatt, characteristic, status);
-            Log.d(TAG, "Led characteristic value: " + characteristic.getStringValue(0));
         }
 
         @Override
         public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
             super.onCharacteristicChanged(gatt, characteristic);
+            airhornConnectionListener.onVolumeChanged(characteristic.getValue());
         }
 
         @Override
         public void onDescriptorWrite(BluetoothGatt gatt, BluetoothGattDescriptor descriptor, int status) {
             super.onDescriptorWrite(gatt, descriptor, status);
-            Log.d(TAG, "Led descriptor value: " + descriptor.getValue().toString());
         }
     };
 
-    public AirhornConnection(BluetoothDevice device, Context context, BluetoothConnectionListener listener) {
+    public AirhornConnection(BluetoothDevice device, Context context, AirhornConnectionListener listener) {
         this.bluetoothDevice = device;
-        this.bluetoothConnectionListener = listener;
+        this.airhornConnectionListener = listener;
         this.bluetoothGatt = bluetoothDevice.connectGatt(context, true, gattCallback);
         this.bluetoothGatt.connect();
         this.bluetoothGatt.discoverServices();
-    }
-
-    public void sendOffCommand(){
-        write(new byte[]{0x00});
-    }
-
-    public void sendOnCommand(){
-        write(new byte[]{0x20});
-    }
-
-    private void write(byte[] command) {
-        if(ledCharacteristic != null){
-            ledCharacteristic.setValue(command);
-            boolean success = bluetoothGatt.writeCharacteristic(ledCharacteristic);
-            Log.d(TAG, "Wrote to led characteristic with success=" + success);
-            Log.d(TAG, ledCharacteristic.getStringValue(0));
-        }
-
-//        if(ledDescriptor != null){
-//            ledDescriptor.setValue(new byte[]{0x41, 0x14});
-//            boolean success = bluetoothGatt.writeDescriptor(ledDescriptor);
-//            byte[] bytes = ledDescriptor.getValue();
-//            Log.d(TAG, "Set descriptor: " + bytes);
-//            Log.d(TAG, "Wrote to led descriptor with success=" + success);
-//        }
     }
 
     public void disconnect() {
@@ -142,8 +100,8 @@ public class AirhornConnection {
             bluetoothGatt.close();
             bluetoothGatt = null;
         }
-        ledCharacteristic = null;
-        ledService = null;
+        volumeCharacteristic = null;
+        volumeService = null;
     }
 
     public boolean isConnected() {
