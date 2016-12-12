@@ -1,4 +1,11 @@
 <resources>
     <string name="app_name">Bluetooth Air Horn</string>
+
+    <!-- Main Activity -->
+    <string name="bluetooth_and_location_permission_rationale">Android requires location access in order to make the most of Bluetooth Low Energy. Your location won\'t be used in any way.</string>
+    <string name="bluetooth_and_location_permission_title">Still want to swag out?</string>
+    <string name="permissions_go_to_settings">App Settings</string>
+    <string name="permissions_cancel">No Thanks</string>
+
     <string name="welcome_title">You\'re all set!</string>
 </resources>

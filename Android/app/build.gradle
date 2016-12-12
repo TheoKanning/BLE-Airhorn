@@ -38,6 +38,7 @@ dependencies {
     compile 'com.google.code.gson:gson:2.4'
     compile "com.google.dagger:dagger:$daggerVersion"
     compile 'com.jakewharton.timber:timber:4.3.1'
+    compile 'pub.devrel:easypermissions:0.2.1'
 
     compile "com.jakewharton:butterknife:$butterknifeVersion"
     apt "com.jakewharton:butterknife-compiler:$butterknifeVersion"
