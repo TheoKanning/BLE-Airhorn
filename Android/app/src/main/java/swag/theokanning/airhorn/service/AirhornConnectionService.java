@@ -32,7 +32,7 @@ public class AirhornConnectionService extends Service {
     private AirhornConnectionListener listener = new AirhornConnectionListener() {
         @Override
         public void onVolumeChanged(byte volume) {
-            Timber.d("Volume changed: " + volume);
+            Timber.d("Volume changed: %d", (int)volume);
         }
 
         @Override

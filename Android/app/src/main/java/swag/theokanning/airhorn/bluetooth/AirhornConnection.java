@@ -77,7 +77,7 @@ public class AirhornConnection {
         @Override
         public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
             super.onCharacteristicChanged(gatt, characteristic);
-            airhornConnectionListener.onVolumeChanged(characteristic.getValue());
+            airhornConnectionListener.onVolumeChanged(characteristic.getValue()[0]);
         }
 
         @Override

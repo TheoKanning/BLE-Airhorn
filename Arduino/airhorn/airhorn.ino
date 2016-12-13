@@ -1,31 +1,32 @@
-const int maxVolume = 255;
+const int maxVolume = 100;
 const float weight = 0.1f;
 const int period = 20; //50Hz
 
-const int buttonPin = 5; //pick the correct pin later
+const int buttonPin = 2; //pick the correct pin later
 
-int volume = 0;
+float volume = 0;
 
 void setup() {
   pinMode(buttonPin, INPUT);
+  digitalWrite(buttonPin, HIGH); // attach pull-up resistor
   Serial.begin(115200);
 }
 
 void loop() {
   updateVolume();
-  Serial.println(volume, DEC);
+  Serial.write(round(volume));
   delay(20);
 }
 
 void updateVolume(){
   int input;
-  if(digitalRead(buttonPin) == HIGH) {
+  // button pressed -> pin low
+  if(digitalRead(buttonPin) == LOW) {
     input = maxVolume;
   } else {
     input = 0;
   }
 
-  volume += round((input - volume)/weight);
-  
+  volume = volume + (input - volume)*weight;
 }
 
