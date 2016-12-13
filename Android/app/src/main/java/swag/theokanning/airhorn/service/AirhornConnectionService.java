@@ -7,6 +7,7 @@ import android.bluetooth.le.ScanResult;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.media.MediaPlayer;
 import android.os.Binder;
 import android.os.IBinder;
 import android.widget.Toast;
@@ -17,6 +18,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import swag.theokanning.airhorn.AirhornApplication;
+import swag.theokanning.airhorn.R;
 import swag.theokanning.airhorn.bluetooth.AirhornConnection;
 import swag.theokanning.airhorn.bluetooth.AirhornConnectionListener;
 import swag.theokanning.airhorn.bluetooth.AirhornScanner;
@@ -27,12 +29,25 @@ public class AirhornConnectionService extends Service {
 
     @Inject AirhornScanner airhornScanner;
 
+    private MediaPlayer mediaPlayer;
+    private boolean playingSound = false;
     private AirhornServiceBinder binder = new AirhornServiceBinder();
     private List<AirhornConnection> airhornConnections = new ArrayList<>();
     private AirhornConnectionListener listener = new AirhornConnectionListener() {
         @Override
-        public void onVolumeChanged(byte volume) {
-            Timber.d("Volume changed: %d", (int)volume);
+        public void onVolumeChanged(float volume) {
+            Timber.d("Volume changed: %f", volume);
+            mediaPlayer.setVolume(volume, volume);
+            if (volume == 0) {
+                if (playingSound) {
+                    stopPlaying();
+                }
+            } else {
+                if (!playingSound) {
+                    startPlaying();
+                }
+                mediaPlayer.setVolume(volume, volume);
+            }
         }
 
         @Override
@@ -46,7 +61,8 @@ public class AirhornConnectionService extends Service {
         }
     };
 
-    public AirhornConnectionService() {}
+    public AirhornConnectionService() {
+    }
 
     public static void bindToService(Context context, ServiceConnection connection) {
         Intent intent = new Intent(context, AirhornConnectionService.class);
@@ -57,6 +73,7 @@ public class AirhornConnectionService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Timber.d("Starting AirhornConnectionService");
         ((AirhornApplication) getApplicationContext()).getComponent().inject(this);
+        mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.air_horn);
         if (airhornScanner.isEnabled()) {
             startAirhornScan();
         } else {
@@ -101,10 +118,23 @@ public class AirhornConnectionService extends Service {
         });
     }
 
-    private void connectToAirhorn(BluetoothDevice airhorn){
+    private void connectToAirhorn(BluetoothDevice airhorn) {
         AirhornConnection connection = new AirhornConnection(airhorn, getApplicationContext(), listener);
         // todo check if this is the proper way to maintain multiple connections (it's probably not)
         airhornConnections.add(connection);
+    }
+
+    private void startPlaying() {
+        Timber.d("Starting swag");
+            mediaPlayer.seekTo(0);
+            mediaPlayer.start();
+        playingSound = true;
+    }
+
+    private void stopPlaying() {
+        Timber.d("Stopping swag");
+        mediaPlayer.pause();
+        playingSound = false;
     }
 
     public class AirhornServiceBinder extends Binder {

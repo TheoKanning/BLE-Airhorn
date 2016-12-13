@@ -1,7 +1,7 @@
 package swag.theokanning.airhorn.bluetooth;
 
 public interface AirhornConnectionListener {
-    void onVolumeChanged(byte volume);
+    void onVolumeChanged(float volume);
 
     void onConnect();
 

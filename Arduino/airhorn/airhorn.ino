@@ -1,10 +1,11 @@
 const int maxVolume = 100;
-const float weight = 0.1f;
+const float weight = 0.2f;
 const int period = 20; //50Hz
 
 const int buttonPin = 2; //pick the correct pin later
 
 float volume = 0;
+int oldVolumeOutput = -1;
 
 void setup() {
   pinMode(buttonPin, INPUT);
@@ -14,7 +15,6 @@ void setup() {
 
 void loop() {
   updateVolume();
-  Serial.write(round(volume));
   delay(20);
 }
 
@@ -28,5 +28,12 @@ void updateVolume(){
   }
 
   volume = volume + (input - volume)*weight;
+  int volumeOutput = round(volume);
+
+  if(volumeOutput != oldVolumeOutput){
+    Serial.write(round(volume));
+  }
+
+  oldVolumeOutput = volumeOutput;
 }
 
