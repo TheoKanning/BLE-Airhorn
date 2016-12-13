@@ -9,7 +9,10 @@ import swag.theokanning.airhorn.service.AirhornConnectionService;
 import swag.theokanning.airhorn.ui.fragment.WelcomeFragment;
 
 @Singleton
-@Component(modules = BluetoothModule.class)
+@Component(modules = {
+        ApplicationModule.class,
+        BluetoothModule.class,
+        AudioModule.class})
 public interface AirhornComponent {
     // activities
 

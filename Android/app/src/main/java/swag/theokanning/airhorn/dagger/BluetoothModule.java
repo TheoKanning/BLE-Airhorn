@@ -1,6 +1,6 @@
 package swag.theokanning.airhorn.dagger;
 
-import android.content.Context;
+import android.app.Application;
 
 import javax.inject.Singleton;
 
@@ -11,16 +11,9 @@ import swag.theokanning.airhorn.bluetooth.AirhornScanner;
 @Module
 public class BluetoothModule {
 
-    private Context context;
-
-    public BluetoothModule(Context context) {
-        this.context = context.getApplicationContext();
-    }
-
     @Provides
     @Singleton
-    AirhornScanner provideBluetoothScanner() {
-        return new AirhornScanner(context);
+    AirhornScanner provideBluetoothScanner(Application application) {
+        return new AirhornScanner(application);
     }
-
 }

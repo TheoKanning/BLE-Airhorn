@@ -18,7 +18,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import swag.theokanning.airhorn.AirhornApplication;
-import swag.theokanning.airhorn.R;
 import swag.theokanning.airhorn.bluetooth.AirhornConnection;
 import swag.theokanning.airhorn.bluetooth.AirhornConnectionListener;
 import swag.theokanning.airhorn.bluetooth.AirhornScanner;
@@ -29,11 +28,12 @@ import timber.log.Timber;
 public class AirhornConnectionService extends Service {
 
     @Inject AirhornScanner airhornScanner;
+    @Inject MediaPlayer mediaPlayer;
 
-    private MediaPlayer mediaPlayer;
     private boolean playingSound = false;
     private AirhornServiceBinder binder = new AirhornServiceBinder();
     private List<AirhornConnection> airhornConnections = new ArrayList<>();
+
     private AirhornConnectionListener listener = new AirhornConnectionListener() {
         @Override
         public void onVolumeChanged(AirhornCommand command) {
@@ -71,7 +71,7 @@ public class AirhornConnectionService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Timber.d("Starting AirhornConnectionService");
         ((AirhornApplication) getApplicationContext()).getComponent().inject(this);
-        mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.air_horn);
+
         if (airhornScanner.isEnabled()) {
             startAirhornScan();
         } else {
