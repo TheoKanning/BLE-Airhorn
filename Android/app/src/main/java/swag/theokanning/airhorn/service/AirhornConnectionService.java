@@ -22,6 +22,7 @@ import swag.theokanning.airhorn.R;
 import swag.theokanning.airhorn.bluetooth.AirhornConnection;
 import swag.theokanning.airhorn.bluetooth.AirhornConnectionListener;
 import swag.theokanning.airhorn.bluetooth.AirhornScanner;
+import swag.theokanning.airhorn.model.AirhornCommand;
 import timber.log.Timber;
 
 
@@ -35,18 +36,15 @@ public class AirhornConnectionService extends Service {
     private List<AirhornConnection> airhornConnections = new ArrayList<>();
     private AirhornConnectionListener listener = new AirhornConnectionListener() {
         @Override
-        public void onVolumeChanged(float volume) {
-            Timber.d("Volume changed: %f", volume);
-            mediaPlayer.setVolume(volume, volume);
-            if (volume == 0) {
-                if (playingSound) {
-                    stopPlaying();
-                }
-            } else {
+        public void onVolumeChanged(AirhornCommand command) {
+            Timber.d("Volume changed: %f", command.getVolume());
+            if (command.isEnabled()) {
                 if (!playingSound) {
                     startPlaying();
                 }
-                mediaPlayer.setVolume(volume, volume);
+                mediaPlayer.setVolume(command.getVolume(), command.getVolume());
+            } else if (playingSound) {
+                stopPlaying();
             }
         }
 
@@ -126,8 +124,8 @@ public class AirhornConnectionService extends Service {
 
     private void startPlaying() {
         Timber.d("Starting swag");
-            mediaPlayer.seekTo(0);
-            mediaPlayer.start();
+        mediaPlayer.seekTo(0);
+        mediaPlayer.start();
         playingSound = true;
     }
 

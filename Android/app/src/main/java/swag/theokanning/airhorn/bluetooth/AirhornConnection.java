@@ -12,6 +12,7 @@ import android.util.Log;
 
 import java.util.List;
 
+import swag.theokanning.airhorn.model.AirhornCommand;
 import timber.log.Timber;
 
 /**
@@ -78,7 +79,7 @@ public class AirhornConnection {
         public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
             super.onCharacteristicChanged(gatt, characteristic);
             int volume = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 0);
-            airhornConnectionListener.onVolumeChanged(((float)volume)/100);
+            airhornConnectionListener.onVolumeChanged(new AirhornCommand(volume));
         }
 
         @Override
