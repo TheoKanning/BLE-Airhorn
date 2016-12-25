@@ -18,6 +18,7 @@ import swag.theokanning.airhorn.AirhornApplication;
 import swag.theokanning.airhorn.R;
 import swag.theokanning.airhorn.bluetooth.AirhornScanner;
 import swag.theokanning.airhorn.service.AirhornConnectionService;
+import swag.theokanning.airhorn.ui.base.BaseFragment;
 import timber.log.Timber;
 
 /**

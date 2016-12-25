@@ -1,4 +1,4 @@
-package swag.theokanning.airhorn.ui.activity;
+package swag.theokanning.airhorn.ui.base;
 
 
 import android.os.Bundle;
@@ -6,7 +6,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import swag.theokanning.airhorn.R;
-import swag.theokanning.airhorn.ui.fragment.BaseFragment;
 
 
 public class BaseActivity extends AppCompatActivity {

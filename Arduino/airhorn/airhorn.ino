@@ -2,7 +2,7 @@ const int maxVolume = 100;
 const float weight = 0.5f;
 const int period = 20; //50Hz
 
-const int buttonPin = 2; //pick the correct pin later
+const int buttonPin = 2; 
 
 float volume = 0;
 int oldVolumeOutput = -1;

@@ -13,6 +13,7 @@ import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
 import swag.theokanning.airhorn.R;
 import swag.theokanning.airhorn.service.AirhornConnectionService;
+import swag.theokanning.airhorn.ui.base.BaseActivity;
 import swag.theokanning.airhorn.ui.fragment.WelcomeFragment;
 import timber.log.Timber;
 

@@ -1,8 +1,6 @@
-package swag.theokanning.airhorn.ui.fragment;
+package swag.theokanning.airhorn.ui.base;
 
 import android.support.v4.app.Fragment;
-
-import swag.theokanning.airhorn.ui.activity.BaseActivity;
 
 
 public abstract class BaseFragment extends Fragment {
