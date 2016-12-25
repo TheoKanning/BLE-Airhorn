@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'me.tatarka.retrolambda'
 
 android {
     compileSdkVersion 25
@@ -12,6 +13,12 @@ android {
         versionCode 1
         versionName "0.1"
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -29,6 +36,7 @@ ext {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
+    testCompile "org.mockito:mockito-core:1.10.19"
 
     apt "com.google.dagger:dagger-compiler:$daggerVersion"
     provided 'org.glassfish:javax.annotation:10.0-b28'
@@ -38,7 +46,11 @@ dependencies {
     compile 'com.google.code.gson:gson:2.4'
     compile "com.google.dagger:dagger:$daggerVersion"
     compile 'com.jakewharton.timber:timber:4.3.1'
-    compile 'pub.devrel:easypermissions:0.2.1'
+
+    // rxjava
+    compile 'io.reactivex:rxandroid:1.2.0'
+    compile 'io.reactivex:rxjava:1.1.5'
+    compile 'com.tbruyelle.rxpermissions:rxpermissions:0.9.1@aar'
 
     compile "com.jakewharton:butterknife:$butterknifeVersion"
     apt "com.jakewharton:butterknife-compiler:$butterknifeVersion"

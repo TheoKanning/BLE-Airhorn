@@ -7,6 +7,7 @@ import javax.inject.Singleton;
 import dagger.Component;
 import swag.theokanning.airhorn.service.AirhornConnectionService;
 import swag.theokanning.airhorn.ui.fragment.WelcomeFragment;
+import swag.theokanning.airhorn.ui.onboarding.MainActivity;
 
 @Singleton
 @Component(modules = {
@@ -15,6 +16,7 @@ import swag.theokanning.airhorn.ui.fragment.WelcomeFragment;
         AudioModule.class})
 public interface AirhornComponent {
     // activities
+    void inject(MainActivity activity);
 
     // application
     void inject(Application application);

@@ -1,4 +1,4 @@
-package swag.theokanning.airhorn;
+package swag.theokanning.airhorn.bluetooth;
 
 import org.junit.Test;
 
