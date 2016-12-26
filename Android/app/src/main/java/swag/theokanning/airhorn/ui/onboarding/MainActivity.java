@@ -1,6 +1,9 @@
 package swag.theokanning.airhorn.ui.onboarding;
 
 import android.Manifest;
+import android.app.Activity;
+import android.bluetooth.BluetoothAdapter;
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.tbruyelle.rxpermissions.RxPermissions;
@@ -13,9 +16,7 @@ import swag.theokanning.airhorn.ui.base.BaseActivity;
 
 public class MainActivity extends BaseActivity implements OnboardingView {
 
-    private static final int BLUETOOTH_AND_COARSE_LOCATION_REQUEST = 47;
-
-    private static final int SETTINGS_REQUEST = 32;
+    private static final int ENABLE_BLUETOOTH_REQUEST_CODE = 47;
 
     @Inject
     OnboardingPresenter presenter;
@@ -50,5 +51,28 @@ public class MainActivity extends BaseActivity implements OnboardingView {
     @Override
     public void showLocationRationale() {
 
+    }
+
+    @Override
+    public void showBluetoothRationale() {
+
+    }
+
+    @Override
+    public void requestBluetooth() {
+        Intent enableBluetoothIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+        startActivityForResult(enableBluetoothIntent, ENABLE_BLUETOOTH_REQUEST_CODE);
+    }
+
+    @Override
+    public void startScan() {
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == ENABLE_BLUETOOTH_REQUEST_CODE) {
+            presenter.onBluetoothRequestResult(resultCode == Activity.RESULT_OK);
+        }
     }
 }

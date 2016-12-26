@@ -1,7 +1,6 @@
 package swag.theokanning.airhorn.ui.onboarding;
 
 import swag.theokanning.airhorn.ui.base.mvp.BasePresenter;
-import timber.log.Timber;
 
 
 public class OnboardingPresenter extends BasePresenter<OnboardingView> {
@@ -10,17 +9,27 @@ public class OnboardingPresenter extends BasePresenter<OnboardingView> {
 
     }
 
-    public void onCreate(){
+    public void onCreate() {
         getView().checkLocationPermission();
     }
 
-
-    public void onLocationPermissionResult(boolean granted){
-        Timber.d("Permissions granted: %b", granted);
-        if(granted){
-            getView().isBluetoothOn();
+    public void onLocationPermissionResult(boolean granted) {
+        if (granted) {
+            if (getView().isBluetoothOn()) {
+                getView().startScan();
+            } else {
+                getView().requestBluetooth();
+            }
         } else {
             getView().showLocationRationale();
+        }
+    }
+
+    public void onBluetoothRequestResult(boolean enabled) {
+        if(enabled){
+            getView().startScan();
+        } else {
+            getView().showBluetoothRationale();
         }
     }
 }

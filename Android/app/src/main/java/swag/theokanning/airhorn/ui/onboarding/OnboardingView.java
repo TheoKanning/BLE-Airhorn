@@ -6,6 +6,8 @@ public interface OnboardingView extends BaseView {
 
     boolean isBluetoothOn();
     void checkLocationPermission();
-
+    void requestBluetooth();
     void showLocationRationale();
+    void showBluetoothRationale();
+    void startScan();
 }

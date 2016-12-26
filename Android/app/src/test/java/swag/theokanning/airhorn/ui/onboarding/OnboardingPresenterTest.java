@@ -4,11 +4,12 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.when;
 
 public class OnboardingPresenterTest {
 
     @Test
-    public void checksLocationPermissionInOnCreate(){
+    public void checksLocationPermissionInOnCreate() {
         OnboardingPresenter presenter = new OnboardingPresenter();
         OnboardingView view = Mockito.mock(OnboardingView.class);
         presenter.attachView(view);
@@ -18,7 +19,7 @@ public class OnboardingPresenterTest {
     }
 
     @Test
-    public void checksBluetoothIfLocationPermissionGranted(){
+    public void checksBluetoothIfLocationPermissionGranted() {
         OnboardingPresenter presenter = new OnboardingPresenter();
         OnboardingView view = Mockito.mock(OnboardingView.class);
         presenter.attachView(view);
@@ -28,12 +29,54 @@ public class OnboardingPresenterTest {
     }
 
     @Test
-    public void showsRationaleIfLocationPermissionRejected(){
+    public void showsRationaleIfLocationPermissionRejected() {
         OnboardingPresenter presenter = new OnboardingPresenter();
         OnboardingView view = Mockito.mock(OnboardingView.class);
         presenter.attachView(view);
 
         presenter.onLocationPermissionResult(false);
         Mockito.verify(view, times(1)).showLocationRationale();
+    }
+
+    @Test
+    public void requestsBluetoothIfNotEnabledAfterLocation() {
+        OnboardingPresenter presenter = new OnboardingPresenter();
+        OnboardingView view = Mockito.mock(OnboardingView.class);
+        when(view.isBluetoothOn()).thenReturn(false);
+        presenter.attachView(view);
+
+        presenter.onLocationPermissionResult(true);
+        Mockito.verify(view, times(1)).requestBluetooth();
+    }
+
+    @Test
+    public void startScanIfBluetoothEnabledAfterLocation() {
+        OnboardingPresenter presenter = new OnboardingPresenter();
+        OnboardingView view = Mockito.mock(OnboardingView.class);
+        when(view.isBluetoothOn()).thenReturn(true);
+        presenter.attachView(view);
+
+        presenter.onLocationPermissionResult(true);
+        Mockito.verify(view, times(1)).startScan();
+    }
+
+    @Test
+    public void startScanIfBluetoothEnabledAfterRequest() {
+        OnboardingPresenter presenter = new OnboardingPresenter();
+        OnboardingView view = Mockito.mock(OnboardingView.class);
+        presenter.attachView(view);
+
+        presenter.onBluetoothRequestResult(true);
+        Mockito.verify(view, times(1)).startScan();
+    }
+
+    @Test
+    public void showBluetoothRationaleIfBluetoothDenied() {
+        OnboardingPresenter presenter = new OnboardingPresenter();
+        OnboardingView view = Mockito.mock(OnboardingView.class);
+        presenter.attachView(view);
+
+        presenter.onBluetoothRequestResult(false);
+        Mockito.verify(view, times(1)).showBluetoothRationale();
     }
 }
