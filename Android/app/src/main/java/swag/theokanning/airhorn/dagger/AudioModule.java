@@ -2,22 +2,28 @@ package swag.theokanning.airhorn.dagger;
 
 
 import android.app.Application;
-import android.media.MediaPlayer;
+import android.media.SoundPool;
 
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import swag.theokanning.airhorn.R;
+import swag.theokanning.airhorn.sound.AirhornPlayer;
 
 @Module
 public class AudioModule {
 
     @Singleton
     @Provides
-    MediaPlayer provideMediaPlayer(Application application){
-        MediaPlayer mediaPlayer = MediaPlayer.create(application, R.raw.air_horn);
-        mediaPlayer.setLooping(true);
-        return mediaPlayer;
+    SoundPool provideSoundPool(){
+        return new SoundPool.Builder()
+                .setMaxStreams(10)
+                .build();
+    }
+
+    @Singleton
+    @Provides
+    AirhornPlayer provideAirhornPlayer(SoundPool soundPool, Application application){
+        return new AirhornPlayer(soundPool, application);
     }
 }

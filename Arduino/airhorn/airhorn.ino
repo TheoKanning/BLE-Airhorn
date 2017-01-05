@@ -1,11 +1,7 @@
-const int maxVolume = 100;
-const float weight = 0.5f;
-const int period = 20; //50Hz
+const int buttonPin = 2;
 
-const int buttonPin = 2; 
-
-float volume = 0;
-int oldVolumeOutput = -1;
+int swagCount = 0;
+boolean buttonHeld = false; // whether or not the button was previously held down
 
 void setup() {
   pinMode(buttonPin, INPUT);
@@ -14,26 +10,28 @@ void setup() {
 }
 
 void loop() {
-  updateVolume();
+  updateSwagCount();
   delay(20);
 }
 
-void updateVolume() {
+void updateSwagCount() {
   int input;
-  // button pressed -> pin low
-  if(digitalRead(buttonPin) == LOW) {
-    input = maxVolume;
+  if (buttonPressed()) {
+    if (!buttonHeld) {
+      swagCount++;
+      Serial.write(swagCount);
+    }
+    buttonHeld = true;
   } else {
-    input = 0;
+    buttonHeld = false;
   }
+}
 
-  volume = volume + (input - volume)*weight;
-  int volumeOutput = round(volume);
-
-  if(volumeOutput != oldVolumeOutput){
-    Serial.write(volumeOutput);
-  }
-
-  oldVolumeOutput = volumeOutput;
+/**
+   Returns true if the button is currently being pressed, false otherwise
+*/
+boolean buttonPressed() {
+  // button pressed -> pin low
+  return digitalRead(buttonPin) == LOW;
 }
 

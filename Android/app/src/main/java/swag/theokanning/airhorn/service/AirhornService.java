@@ -7,7 +7,6 @@ import android.bluetooth.le.ScanResult;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.media.MediaPlayer;
 import android.os.Binder;
 import android.os.IBinder;
 import android.widget.Toast;
@@ -21,31 +20,23 @@ import swag.theokanning.airhorn.AirhornApplication;
 import swag.theokanning.airhorn.bluetooth.AirhornConnection;
 import swag.theokanning.airhorn.bluetooth.AirhornConnectionListener;
 import swag.theokanning.airhorn.bluetooth.AirhornScanner;
-import swag.theokanning.airhorn.model.AirhornCommand;
+import swag.theokanning.airhorn.sound.AirhornPlayer;
 import timber.log.Timber;
 
 
 public class AirhornService extends Service {
 
     @Inject AirhornScanner airhornScanner;
-    @Inject MediaPlayer mediaPlayer;
+    @Inject AirhornPlayer airhornPlayer;
 
-    private boolean playingSound = false;
     private AirhornServiceBinder binder = new AirhornServiceBinder();
     private List<AirhornConnection> airhornConnections = new ArrayList<>();
 
     private AirhornConnectionListener listener = new AirhornConnectionListener() {
         @Override
-        public void onVolumeChanged(AirhornCommand command) {
-            Timber.d("Volume changed: %f", command.getVolume());
-            if (command.isEnabled()) {
-                if (!playingSound) {
-                    startPlaying();
-                }
-                mediaPlayer.setVolume(command.getVolume(), command.getVolume());
-            } else if (playingSound) {
-                stopPlaying();
-            }
+        public void onSwagCountChanged(int swagCount) {
+            Timber.d("Swag count changed: %d", swagCount);
+            airhornPlayer.playAirhorn();
         }
 
         @Override
@@ -55,7 +46,6 @@ public class AirhornService extends Service {
 
         @Override
         public void onDisconnect() {
-            stopPlaying();
         }
     };
 
@@ -117,19 +107,6 @@ public class AirhornService extends Service {
         AirhornConnection connection = new AirhornConnection(airhorn, getApplicationContext(), listener);
         // todo check if this is the proper way to maintain multiple connections (it's probably not)
         airhornConnections.add(connection);
-    }
-
-    private void startPlaying() {
-        Timber.d("Starting swag");
-        mediaPlayer.seekTo(0);
-        mediaPlayer.start();
-        playingSound = true;
-    }
-
-    private void stopPlaying() {
-        Timber.d("Stopping swag");
-        mediaPlayer.pause();
-        playingSound = false;
     }
 
     public class AirhornServiceBinder extends Binder {

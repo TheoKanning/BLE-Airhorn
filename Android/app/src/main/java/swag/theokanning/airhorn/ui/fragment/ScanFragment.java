@@ -27,7 +27,7 @@ public class ScanFragment extends BaseFragment {
 
     boolean bluetoothServiceBound = false;
     private AirhornService bluetoothService;
-    private ServiceConnection btServiceConnection = new ServiceConnection() {
+    private ServiceConnection airhornServiceConnection = new ServiceConnection() {
 
         @Override
         public void onServiceConnected(ComponentName className, IBinder service) {
@@ -59,15 +59,15 @@ public class ScanFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        startBleService();
+        AirhornService.bindToService(getContext(), airhornServiceConnection);
     }
 
     @Override
     public void onPause() {
         super.onPause();
+        if(airhornServiceConnection != null){
+            getActivity().unbindService(airhornServiceConnection);
+        }
     }
 
-    private void startBleService() {
-        AirhornService.bindToService(getContext(), btServiceConnection);
-    }
 }

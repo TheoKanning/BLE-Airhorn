@@ -12,7 +12,6 @@ import android.util.Log;
 
 import java.util.List;
 
-import swag.theokanning.airhorn.model.AirhornCommand;
 import timber.log.Timber;
 
 /**
@@ -60,7 +59,7 @@ public class AirhornConnection {
 
             volumeService = gatt.getService(UUIDs.AIRHORN_SERVICE_UUID);
             if(volumeService != null){
-                volumeCharacteristic = volumeService.getCharacteristic(UUIDs.VOLUME_CHARACTERISTIC_UUID);
+                volumeCharacteristic = volumeService.getCharacteristic(UUIDs.SWAG_COUNT_CHARACTERISTIC_UUID);
                 gatt.setCharacteristicNotification(volumeCharacteristic, true);
             }
         }
@@ -78,8 +77,8 @@ public class AirhornConnection {
         @Override
         public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
             super.onCharacteristicChanged(gatt, characteristic);
-            int volume = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 0);
-            airhornConnectionListener.onVolumeChanged(new AirhornCommand(volume));
+            int swagCount = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 0);
+            airhornConnectionListener.onSwagCountChanged(swagCount);
         }
 
         @Override
