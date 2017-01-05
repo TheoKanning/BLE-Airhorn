@@ -26,7 +26,6 @@ public class AirhornScanner {
 
     private BluetoothAdapter bluetoothAdapter;
     private BluetoothLeScanner bleScanner;
-    private ScanCallback scanCallback;
 
     private boolean mScanning;
     private Handler handler;
@@ -46,7 +45,6 @@ public class AirhornScanner {
     }
 
     public void startScan(final ScanCallback scanCallback) {
-        this.scanCallback = scanCallback;
         Toast.makeText(context, "Scan started", Toast.LENGTH_SHORT).show();
 
         handler.postDelayed(new Runnable() {

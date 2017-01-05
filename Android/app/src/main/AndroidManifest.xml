@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    package="swag.theokanning.airhorn">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="swag.theokanning.airhorn">
 
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
     <uses-permission android:name="android.permission.BLUETOOTH"/>
@@ -26,8 +25,17 @@
         </activity>
 
         <service
-            android:name=".service.AirhornConnectionService"
+            android:name=".service.AirhornService"
             android:exported="false"/>
+
+        <receiver
+            android:name=".receiver.BootReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

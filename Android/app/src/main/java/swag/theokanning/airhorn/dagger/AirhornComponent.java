@@ -5,8 +5,8 @@ import android.app.Application;
 import javax.inject.Singleton;
 
 import dagger.Component;
-import swag.theokanning.airhorn.service.AirhornConnectionService;
-import swag.theokanning.airhorn.ui.fragment.WelcomeFragment;
+import swag.theokanning.airhorn.service.AirhornService;
+import swag.theokanning.airhorn.ui.fragment.ScanFragment;
 import swag.theokanning.airhorn.ui.onboarding.MainActivity;
 
 @Singleton
@@ -22,8 +22,8 @@ public interface AirhornComponent {
     void inject(Application application);
 
     // fragments
-    void inject(WelcomeFragment fragment);
+    void inject(ScanFragment fragment);
 
     // service
-    void inject(AirhornConnectionService service);
+    void inject(AirhornService service);
 }

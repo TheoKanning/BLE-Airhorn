@@ -13,13 +13,13 @@ import javax.inject.Inject;
 import swag.theokanning.airhorn.AirhornApplication;
 import swag.theokanning.airhorn.R;
 import swag.theokanning.airhorn.ui.base.BaseActivity;
+import swag.theokanning.airhorn.ui.fragment.ScanFragment;
 
 public class MainActivity extends BaseActivity implements OnboardingView {
 
     private static final int ENABLE_BLUETOOTH_REQUEST_CODE = 47;
 
-    @Inject
-    OnboardingPresenter presenter;
+    @Inject OnboardingPresenter presenter;
 
     private RxPermissions rxPermissions;
 
@@ -66,7 +66,7 @@ public class MainActivity extends BaseActivity implements OnboardingView {
 
     @Override
     public void startScan() {
-
+        setFragment(new ScanFragment(), true);
     }
 
     @Override

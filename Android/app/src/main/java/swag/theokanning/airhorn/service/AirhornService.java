@@ -25,7 +25,7 @@ import swag.theokanning.airhorn.model.AirhornCommand;
 import timber.log.Timber;
 
 
-public class AirhornConnectionService extends Service {
+public class AirhornService extends Service {
 
     @Inject AirhornScanner airhornScanner;
     @Inject MediaPlayer mediaPlayer;
@@ -55,21 +55,18 @@ public class AirhornConnectionService extends Service {
 
         @Override
         public void onDisconnect() {
-
+            stopPlaying();
         }
     };
 
-    public AirhornConnectionService() {
-    }
-
     public static void bindToService(Context context, ServiceConnection connection) {
-        Intent intent = new Intent(context, AirhornConnectionService.class);
+        Intent intent = new Intent(context, AirhornService.class);
         context.bindService(intent, connection, Context.BIND_AUTO_CREATE);
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Timber.d("Starting AirhornConnectionService");
+        Timber.d("Starting AirhornService");
         ((AirhornApplication) getApplicationContext()).getComponent().inject(this);
 
         if (airhornScanner.isEnabled()) {
@@ -136,8 +133,8 @@ public class AirhornConnectionService extends Service {
     }
 
     public class AirhornServiceBinder extends Binder {
-        public AirhornConnectionService getService() {
-            return AirhornConnectionService.this;
+        public AirhornService getService() {
+            return AirhornService.this;
         }
     }
 }
